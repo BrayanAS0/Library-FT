@@ -3,26 +3,33 @@ import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { get } from '../services/api';
+import Api from '../services/api';
+import { Link } from 'react-router-dom';
 
 
 export default function LoginForm(){
   const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState('');
   const [user, setUser] = useState('');
-
+  const [warning,setWarning] =useState<string>("")
   const authentication = () => {
     if (password && user) {
-      get(`minilibrary/verify_user/?user=${user}&password=${password}`).then(data =>
+      let data={"user":user,"password":password} 
+      Api.post(`minilibrary/login`,data).then(data =>{
+        if(data["access"]!="granted"){
+      setWarning("User or Password incorrect")
+
+        }
         console.log(data)
+      }
       );
     } else {
-      console.log('Missing credentials');
+      setWarning("All fields are required")
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-cyan-50 to-green-100">
+    <div className="flex flex-col mt-12 bg-gradient-to-br from-cyan-50 to-green-100">
 
 
       <main className="flex flex-1 items-center justify-center px-4">
@@ -32,6 +39,7 @@ export default function LoginForm(){
 
           <TextField
             fullWidth
+            required
             label="Username"
             variant="outlined"
             value={user}
@@ -41,6 +49,7 @@ export default function LoginForm(){
 
           <TextField
             fullWidth
+            required
             label="Password"
             variant="outlined"
             type={visible ? 'text' : 'password'}
@@ -64,10 +73,16 @@ export default function LoginForm(){
           >
             Get Started
           </button>
+          <p className=" text-red-500 mt-3"  >{warning}</p>
         </section>
       </main>
 
- 
+       <div className="text-center mt-5 mb-3">
+        <span className="text-gray-700 text-sm">¿No tienes cuenta?</span>{' '}
+        <Link to="/signup" className="text-green-700 underline text-sm">
+          Crear una cuenta
+        </Link>
+      </div>
     </div>
   );
 }
