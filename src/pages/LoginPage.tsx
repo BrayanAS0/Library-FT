@@ -5,22 +5,26 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Api from '../services/api';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function LoginForm(){
   const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState('');
+  const [username, setUsername] = useState('');
   const [warning,setWarning] =useState<string>("")
+  const navigate = useNavigate();
+
   const authentication = () => {
-    if (password && user) {
-      let data={"user":user,"password":password} 
+    if (password && username) {
+      let data={"username":username,"password":password} 
       Api.post(`minilibrary/login`,data).then(data =>{
         if(data["access"]!="granted"){
       setWarning("User or Password incorrect")
 
         }
         console.log(data)
+        navigate("/index",{ state: { username: username } });
       }
       );
     } else {
@@ -42,8 +46,8 @@ export default function LoginForm(){
             required
             label="Username"
             variant="outlined"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             margin="normal"
           />
 

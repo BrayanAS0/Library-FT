@@ -10,12 +10,12 @@ import { Link } from 'react-router-dom';
 export default function LoginForm(){
   const [visible, setVisible] = useState(false);
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState('');
+  const [username, setUsername] = useState('');
   const [warning,setWarning] =useState<string>("")
   const authentication = () => {
-    if (password && user) {
-      let data={"user":user,"password":password} 
-      Api.post(`minilibrary/verify_user`,data).then(data =>{
+    if (password && username) {
+      let data={"username":username,"password":password} 
+      Api.post(`minilibrary/sign_up`,data).then(data =>{
         if(data["access"]!="granted"){
       setWarning("User or Password incorrect")
 
@@ -42,8 +42,8 @@ export default function LoginForm(){
             required
             label="Username"
             variant="outlined"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             margin="normal"
           />
 

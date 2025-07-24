@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 
  import SignupPage from "./pages/SignupPage";
+import IndexPage from "./pages/IndexPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/index" element ={<IndexPage></IndexPage>}></Route>
             {/* Redirige ruta por defecto a login */}
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
