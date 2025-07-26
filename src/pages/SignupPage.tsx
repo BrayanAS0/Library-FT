@@ -29,7 +29,7 @@ export default function LoginForm(){
   };
 
   return (
-    <div className="flex flex-col mt-12 bg-gradient-to-br from-cyan-50 to-green-100">
+    <div className="flex flex-col mt-12 bg-gradient-to-br ">
 
 
       <main className="flex flex-1 items-center justify-center px-4">
