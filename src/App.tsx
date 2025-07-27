@@ -3,11 +3,12 @@ import LoginPage from "./pages/LoginPage";
 
  import SignupPage from "./pages/SignupPage";
 import IndexPage from "./pages/IndexPage";
+import BookDetail from "./pages/Book";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex flex-col min-h-screen bg-gradient-to-br ">
+      <div className="flex bg-amber-50 flex-col min-h-screen bg-gradient-to-br ">
         <header className="bg-amber-700 text-white text-center py-4 text-xl font-semibold shadow">
           Library Management System
         </header>
@@ -16,6 +17,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/index" element ={<IndexPage></IndexPage>}></Route>
+            <Route path="/index/BookDetail"element={<BookDetail/>}/>
             {/* Redirige ruta por defecto a login */}
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>

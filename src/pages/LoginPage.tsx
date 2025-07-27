@@ -33,10 +33,10 @@ export default function LoginForm(){
   };
 
   return (
-    <div className="flex flex-col mt-12 bg-gradient-to-br ">
+    <div className="flex  flex-col mt-12 bg-gradient-to-br ">
 
 
-      <main className="flex flex-1 items-center justify-center px-4">
+      <main className="flex   flex-1 items-center justify-center px-4">
         <section className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 text-center">
           <h1 className="text-2xl font-bold text-green-700 mb-1">Welcome Back</h1>
           <p className="text-gray-600 mb-6">Please log in to continue</p>
