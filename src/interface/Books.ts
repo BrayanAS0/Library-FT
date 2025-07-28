@@ -4,5 +4,6 @@ export interface Book{
     isbn:string,
     pages:number,
     publication_date:string,
-    title:string
+    title:string,
+    author:string
 }

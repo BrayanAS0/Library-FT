@@ -7,6 +7,8 @@ import { BookIndex } from "../interface/Book_index";
 import Api from "../services/api";
 import { Button } from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { useNavigate } from "react-router-dom";
+
 
 
 
@@ -17,7 +19,7 @@ export default function IndexPage() {
   const username = location.state.username || ""
   const [books, setBooks] = useState<BookIndex[]>([])
   const open = Boolean(anchorEl);
-  console.log(username)
+  const navigate = useNavigate()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -77,7 +79,10 @@ export default function IndexPage() {
       <main className="flex flex-wrap w-full gap-1 m-0 ">
 
         {books.map(book =>
-          <div onClick={() => { console.log(book.has_active_loan) }}
+          <div onClick={() => {
+             console.log(book.has_active_loan)
+navigate("/index/BookDetail")
+           }}
            className=" disabled flex-1 min-w-[375px] max-w-[450px] bg-blue-100 box-border h-[350px]
                 transition-all duration-300 ease-in-out
                 hover:scale-101 hover:shadow-2xl  cursor-pointer"

@@ -3,7 +3,7 @@ import LoginPage from "./pages/LoginPage";
 
  import SignupPage from "./pages/SignupPage";
 import IndexPage from "./pages/IndexPage";
-import BookDetail from "./pages/Book";
+import BookDetail from "./pages/BookDetail";
 
 function App() {
   return (
