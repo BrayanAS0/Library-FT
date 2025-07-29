@@ -81,7 +81,7 @@ export default function IndexPage() {
         {books.map(book =>
           <div onClick={() => {
              console.log(book.has_active_loan)
-navigate("/index/BookDetail")
+navigate("/index/BookDetail",{state:{"id":book.id}})
            }}
            className=" disabled flex-1 min-w-[375px] max-w-[450px] bg-blue-100 box-border h-[350px]
                 transition-all duration-300 ease-in-out
