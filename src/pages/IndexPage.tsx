@@ -5,9 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import { useEffect, useState } from "react";
 import { BookIndex } from "../interface/Book_index";
 import Api from "../services/api";
-import { Button } from "@mui/material";
+import { Autocomplete, Button, TextField } from "@mui/material";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useNavigate } from "react-router-dom";
+import { Book_with_detail } from "../interface/Book_with_detail";
 
 
 
@@ -20,16 +21,20 @@ export default function IndexPage() {
   const [books, setBooks] = useState<BookIndex[]>([])
   const open = Boolean(anchorEl);
   const navigate = useNavigate()
-
+  const [filter_books,set_Filter_book] = useState("a")
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-
+  function filterBook(){
+let filteres_books=  books.filter(x=> x.author.includes(filter_books) )
+setBooks(filteres_books)
+  }
   async function getBooks() {
 
     try {
       let data = await Api.get("minilibrary/get_book_index")
+      await Api.post("minilibrary/loan_books", { "user_id": 1, "book_id": 2 })
       setBooks(data)
       console.log(books)
     } catch (e) {
@@ -76,23 +81,42 @@ export default function IndexPage() {
       </Menu>
 
 
-      <main className="flex flex-wrap w-full gap-1 m-0 ">
+
+
+<main className="flex">
+
+      <section className="mt-2 mx-1">
+        <Autocomplete className="w-sm "
+        onChange={ (e)=>{
+          set_Filter_book(e.currentTarget.val)
+          filterBook()
+        }}
+        value={filter_books}
+          options={books.map((option) => option.title)}
+          renderInput={(params) => <TextField {...params} label="Book" />} 
+
+        />
+      </section>
+
+
+
+      <div className="flex flex-wrap w-full gap-1 m-0 ">
 
         {books.map(book =>
-          <div onClick={() => {
-             console.log(book.has_active_loan)
-navigate("/index/BookDetail",{state:{"id":book.id}})
-           }}
-           className=" disabled flex-1 min-w-[375px] max-w-[450px] bg-blue-100 box-border h-[350px]
+          <div key={book.id} onClick={() => {
+            console.log(book.has_active_loan)
+            navigate("/index/BookDetail", { state: { "id": book.id } })
+          }}
+            className=" disabled flex-1 min-w-85 max-w-95 bg-blue-100 box-border h-[350px]
                 transition-all duration-300 ease-in-out
                 hover:scale-101 hover:shadow-2xl  cursor-pointer"
-                
-                
-                ><div className="w-full h-full ">
-              <img src={url} alt="libro" 
-              
-className={`object-fill w-full h-75/100 transition-opacity duration-300 ${!book.has_active_loan ? 'opacity-100' : 'opacity-60'}`}              
-              
+
+
+          ><div className="w-full h-full ">
+              <img src={url} alt="libro"
+
+                className={`object-fill w-full h-75/100 transition-opacity duration-300 ${!book.has_active_loan ? 'opacity-100' : 'opacity-60'}`}
+
               />
               <div className=" p-1 relative">
                 <h1>{book.title}</h1>
@@ -113,8 +137,8 @@ className={`object-fill w-full h-75/100 transition-opacity duration-300 ${!book.
 
         )}
 
-      </main>
-
+      </div>
+</main>
 
 
     </div>
