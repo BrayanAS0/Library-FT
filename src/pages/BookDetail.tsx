@@ -38,7 +38,7 @@ export default function BookDetail() {
   return (
 
 
-    <div className="flex flex-col  gap-8 bg-white shadow-lg rounded-xl p-8 max-w-5xl mx-auto ">
+    <div className="flex flex-col  gap-8 bg-white shadow-lg rounded-xl p-5 max-w-5xl mx-auto ">
 
           <div className="flex gap-3  flex-1 flex-col md:flex-row ">
                 <img

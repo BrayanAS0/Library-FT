@@ -1,42 +1,30 @@
-import { Link, useLocation } from "react-router-dom"
-import PersonIcon from '@mui/icons-material/Person';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+
 import { useEffect, useState } from "react";
 import { BookIndex } from "../interface/Book_index";
 import Api from "../services/api";
-import { Autocomplete, Button, TextField } from "@mui/material";
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import { Autocomplete, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Book_with_detail } from "../interface/Book_with_detail";
-
 
 
 
 export default function IndexPage() {
   let url = "https://imgs.search.brave.com/InMzoQqc6SfE-jFfzvASUQ9pDpD5-8qmUU89TBJfjUo/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vRUFFNnM2/dDh1Y0UvMi8wLzEw/MDN3L2NhbnZhLXBv/cnRhZGEteS1jb250/cmFwb3J0YWRhLWxp/YnJvLWRlLWFtb3It/aWx1c3RyYWRvLWF6/dWwtclFhR3EwbGI2/SncuanBn"
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const location = useLocation()
-  const username = location.state.username || ""
   const [books, setBooks] = useState<BookIndex[]>([])
-  const open = Boolean(anchorEl);
+  const [filterdBook, setFilterdBooks] = useState<BookIndex[]>([])
   const navigate = useNavigate()
-  const [filter_books,set_Filter_book] = useState("a")
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  function filterBook(){
-let filteres_books=  books.filter(x=> x.author.includes(filter_books) )
-setBooks(filteres_books)
+  function filterBook(input: string) {
+    const filtered_books = books.filter(book =>
+      book.title.toLowerCase().includes(input.toLowerCase() ?? "")
+    );
+    setFilterdBooks(filtered_books);
   }
+
   async function getBooks() {
 
     try {
       let data = await Api.get("minilibrary/get_book_index")
-      await Api.post("minilibrary/loan_books", { "user_id": 1, "book_id": 2 })
-      setBooks(data)
-      console.log(books)
+      return data
     } catch (e) {
       console.log(e)
       return e
@@ -44,101 +32,76 @@ setBooks(filteres_books)
   }
 
   useEffect(() => {
-    getBooks()
+    getBooks().then(data => {
+      setBooks(data)
+      setFilterdBooks(data)
+    })
   }, [])
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   return (
 
     <div className=" border-0 m-0" >
-      <button
-        onClick={handleClick}
-        className="absolute right-1 top-4 text-white flex gap-2 cursor-pointer"
-      >
-        <h1 className="hidden sm:block">{username}</h1>
-        <PersonIcon />
-      </button>
-
-      <Menu
-        id="demo-positioned-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link to="/login">Logout</Link>
-        </MenuItem>
-      </Menu>
 
 
 
+      <main className="flex flex-1">
 
-<main className="flex">
+        <section className="mt-2 mx-1 hidden md:block" >
 
-      <section className="mt-2 mx-1">
-        <Autocomplete className="w-sm "
-        onChange={ (e)=>{
-          set_Filter_book(e.currentTarget.val)
-          filterBook()
-        }}
-        value={filter_books}
-          options={books.map((option) => option.title)}
-          renderInput={(params) => <TextField {...params} label="Book" />} 
-
-        />
-      </section>
-
+          <Autocomplete
+          className="w-50"
+  disablePortal
+  options={filterdBook.map(book=> book.title)}
+  onInputChange={(_, value) => {
+    filterBook(value || "");
+  }}
+  renderInput={(params) => <TextField {...params} label="Title" />}
+/>
+        </section>
 
 
-      <div className="flex flex-wrap w-full gap-1 m-0 ">
 
-        {books.map(book =>
-          <div key={book.id} onClick={() => {
-            console.log(book.has_active_loan)
-            navigate("/index/BookDetail", { state: { "id": book.id } })
-          }}
-            className=" disabled flex-1 min-w-85 max-w-95 bg-blue-100 box-border h-[350px]
+        <div className="flex flex-wrap w-full gap-1 m-0 ">
+
+          {filterdBook.map(book =>
+            <div key={book.id} onClick={() => {
+
+              navigate("/index/BookDetail", { state: { "id": book.id } })
+            }}
+              className=" disabled flex-1 min-w-65 max-w-105 bg-blue-100 box-border h-[350px]
                 transition-all duration-300 ease-in-out
                 hover:scale-101 hover:shadow-2xl  cursor-pointer"
 
 
-          ><div className="w-full h-full ">
-              <img src={url} alt="libro"
+            ><div className="w-full h-full  text-sm">
+                <img src={url} alt="libro"
 
-                className={`object-fill w-full h-75/100 transition-opacity duration-300 ${!book.has_active_loan ? 'opacity-100' : 'opacity-60'}`}
+                  className={`object-fill w-full h-75/100 transition-opacity duration-300 ${!book.has_active_loan ? 'opacity-100' : 'opacity-60'}`}
 
-              />
-              <div className=" p-1 relative">
-                <h1>{book.title}</h1>
-                <div className=" absolute bottom-1 right-2 ">
+                />
+                <div className=" p-1 relative">
+                  <h1>{book.title}</h1>
+                  <div className=" absolute bottom-0 right-1 w-16 h-8  ">
 
-                  <Button disabled={book.has_active_loan} onClick={(e) => {
-                    e.stopPropagation()
-                    console.log(book.has_active_loan)
-                  }} variant="contained" endIcon={<AddBoxIcon />}>
-                    Add
-                  </Button>
+                    <button className="w-full h-full  text-sm border-3 shadow-2xl shadow-blue-950 rounded-xl cursor-pointer   bg-blue-500 disabled:opacity-40" disabled={book.has_active_loan} onClick={(e) => {
+                      e.stopPropagation()
+                      console.log("add")
+                    }} 
+                    
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <h2>pages : {book.pages}</h2>
+                  <h3>Publication date: {book.publication_date}</h3>
                 </div>
-                <h2>pages : {book.pages}</h2>
-                <h3>Publication date: {book.publication_date}</h3>
               </div>
             </div>
-          </div>
 
-        )}
+          )}
 
-      </div>
-</main>
+        </div>
+      </main>
 
 
     </div>
