@@ -4,7 +4,7 @@ import { BookIndex } from "../interface/Book_index";
 import Api from "../services/api";
 import { Autocomplete, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import useCounterLoan from '../store/CounterLoans';
 
 
 export default function IndexPage() {
@@ -12,7 +12,8 @@ export default function IndexPage() {
   const [books, setBooks] = useState<BookIndex[]>([])
   const [filterdBook, setFilterdBooks] = useState<BookIndex[]>([])
   const navigate = useNavigate()
-
+  const setCounterLoans =useCounterLoan(state=> state.setCounterLoan)
+  const counterLoans = useCounterLoan(state => state.counterLoan)
   function filterBook(input: string) {
     const filtered_books = books.filter(book =>
       book.title.toLowerCase().includes(input.toLowerCase() ?? "")
@@ -85,6 +86,7 @@ export default function IndexPage() {
 
                     <button className="w-full h-full  text-sm border-3 shadow-2xl shadow-blue-950 rounded-xl cursor-pointer   bg-blue-500 disabled:opacity-40" disabled={book.has_active_loan} onClick={(e) => {
                       e.stopPropagation()
+                      setCounterLoans([...counterLoans,book.id])
                       console.log("add")
                     }} 
                     
