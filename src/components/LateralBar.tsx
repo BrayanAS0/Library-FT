@@ -4,9 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
-import useCounterLoan from '../store/CounterLoans';
 export default function LateralBar() {
-  const CounterLoans = useCounterLoan((state) => state.counterLoan)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
@@ -26,9 +24,7 @@ export default function LateralBar() {
         <PersonIcon sx={{ fontSize: 40 }} />
       </button>
       <span className="relative inline-block">
-        <ShoppingCartIcon sx={{ fontSize: 40 }} />
         <span className="absolute left-4 top-1   text-black font-bold text-sm ">
-          {CounterLoans.length}
         </span>
       </span>
 
