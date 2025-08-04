@@ -5,15 +5,20 @@ import Api from "../services/api";
 import { Autocomplete, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useCounterLoan from '../store/CounterLoans';
+import Dialog from "../components/Dialog";
+import { useBookLoan } from "../store/BookLoan";
 
 
 export default function IndexPage() {
+  const [showDialog,setShowDialog] =useState(false)
   let url = "https://imgs.search.brave.com/InMzoQqc6SfE-jFfzvASUQ9pDpD5-8qmUU89TBJfjUo/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vRUFFNnM2/dDh1Y0UvMi8wLzEw/MDN3L2NhbnZhLXBv/cnRhZGEteS1jb250/cmFwb3J0YWRhLWxp/YnJvLWRlLWFtb3It/aWx1c3RyYWRvLWF6/dWwtclFhR3EwbGI2/SncuanBn"
   const [books, setBooks] = useState<BookIndex[]>([])
   const [filterdBook, setFilterdBooks] = useState<BookIndex[]>([])
   const navigate = useNavigate()
   const setCounterLoans =useCounterLoan(state=> state.setCounterLoan)
   const counterLoans = useCounterLoan(state => state.counterLoan)
+  const setBookLoan =useBookLoan(state => state.setBookLoan)
+  const bookLoan =useBookLoan(state=> state.bookLoan)
   function filterBook(input: string) {
     const filtered_books = books.filter(book =>
       book.title.toLowerCase().includes(input.toLowerCase() ?? "")
@@ -27,7 +32,6 @@ export default function IndexPage() {
       let data = await Api.get("minilibrary/get_book_index")
       return data
     } catch (e) {
-      console.log(e)
       return e
     }
   }
@@ -42,7 +46,14 @@ export default function IndexPage() {
   return (
 
     <div className=" border-0 m-0" >
-
+{showDialog ? <Dialog
+open={showDialog}
+onClose={() => setShowDialog(false)}
+body={`¿Do you wan to take ${bookLoan} book?`}
+method={() => {
+          console.log("¡Si funciona!");
+          setShowDialog(false);
+        }} />: <></>}
 
 
       <main className="flex flex-1">
@@ -87,7 +98,8 @@ export default function IndexPage() {
                     <button className="w-full h-full  text-sm border-3 shadow-2xl shadow-blue-950 rounded-xl cursor-pointer   bg-blue-500 disabled:opacity-40" disabled={book.has_active_loan} onClick={(e) => {
                       e.stopPropagation()
                       setCounterLoans([...counterLoans,book.id])
-                      console.log("add")
+                      setBookLoan(book.title)
+                      setShowDialog(true)
                     }} 
                     
                     >
