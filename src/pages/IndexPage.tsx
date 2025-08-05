@@ -6,7 +6,6 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Dialog from "../components/Dialog";
 import { useBookLoan } from "../store/BookLoan";
-import { Book } from "../interface/Books";
 import { BookLoan } from "../interface/BookLoan";
 
 export default function IndexPage() {
@@ -30,7 +29,8 @@ export default function IndexPage() {
 
 
    await Api.post("minilibrary/loan_books", book)
-
+let books =await getBooks()
+setFilterdBooks(books)
   }
 
 
