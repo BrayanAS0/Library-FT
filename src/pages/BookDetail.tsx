@@ -70,7 +70,7 @@ export default function BookDetail() {
                   <p>Reviews</p>
                 </div>
                 {book?.reviews.map(review =>
-                  <div>
+                  <div key={review.id}>
                     <h1>{review.user}</h1>
                     <h2>{showStars(review.rating)}</h2>
                     <h2 className=" bg-gray-300 p-5">{review.text}</h2>

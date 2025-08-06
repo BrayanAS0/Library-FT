@@ -12,25 +12,19 @@ export default function IndexPage() {
   const [showDialog, setShowDialog] = useState(false)
   let url = "https://imgs.search.brave.com/InMzoQqc6SfE-jFfzvASUQ9pDpD5-8qmUU89TBJfjUo/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vRUFFNnM2/dDh1Y0UvMi8wLzEw/MDN3L2NhbnZhLXBv/cnRhZGEteS1jb250/cmFwb3J0YWRhLWxp/YnJvLWRlLWFtb3It/aWx1c3RyYWRvLWF6/dWwtclFhR3EwbGI2/SncuanBn"
   const [books, setBooks] = useState<BookIndex[]>([])
-  const [filterdBook, setFilterdBooks] = useState<BookIndex[]>([])
   const navigate = useNavigate()
 
   const [book,setBook]=useState<BookLoan>()
   const setBookLoan = useBookLoan(state => state.setBookLoan)
   const bookLoan = useBookLoan(state => state.bookLoan)
-  function filterBook(input: string) {
-    const filtered_books = books.filter(book =>
-      book.title.toLowerCase().includes(input.toLowerCase() ?? "")
-    );
-    setFilterdBooks(filtered_books);
-  }
+
   async function loanBook() {
 
 
 
    await Api.post("minilibrary/loan_books", book)
 let books =await getBooks()
-setFilterdBooks(books)
+setBooks(books)
   }
 
 
@@ -47,13 +41,15 @@ setFilterdBooks(books)
   useEffect(() => {
     getBooks().then(data => {
       setBooks(data)
-      setFilterdBooks(data)
+      setBooks(data)
     })
   }, [])
 
   return (
 
-    <div className=" border-0 m-0" >
+    <div className=" border-0 m-0 w-full h-full" >
+
+
       {showDialog ? <Dialog
         open={showDialog}
         onClose={() => setShowDialog(false)}
@@ -64,31 +60,39 @@ setFilterdBooks(books)
         }} /> : <></>}
 
 
-      <main className="flex flex-1">
+      <main className="    ">
 
-        <section className="mt-2 mx-1 hidden md:block" >
+        <section className="     flex  justify-center    " >
 
-          <Autocomplete
-            className="w-50"
-            disablePortal
-            options={filterdBook.map(book => book.title)}
-            onInputChange={(_, value) => {
-              filterBook(value || "");
-            }}
-            renderInput={(params) => <TextField {...params} label="Title" />}
-          />
+<Autocomplete
+  className="w-full xl:w-1/2"
+  disablePortal
+  options={books.map(book => book.title)}
+  onChange={(_, value) => {
+    const selectedBook = books.find(book => book.title === value);
+    if (selectedBook) {
+      navigate("/index/BookDetail", { state: { id: selectedBook.id } });
+    }
+  }}
+  renderInput={(params) => <TextField {...params} label="Title" />}
+/>
+
         </section>
 
 
 
-        <div className="flex flex-wrap w-full gap-1 m-0 ">
-
-          {filterdBook.map(book =>
+<div
+  className={`
+    flex flex-wrap justify-center align-text-top h-full
+    md:min-w-4/5 gap-3 m-0
+  `}
+>
+          {books.map(book =>
             <div key={book.id} onClick={() => {
 
               navigate("/index/BookDetail", { state: { "id": book.id } })
             }}
-              className=" disabled flex-1 min-w-65 max-w-105 bg-blue-100 box-border h-[350px]
+              className=" disabled flex-1 min-w-65 max-w-105 bg-blue-100 box-border min-h-100
                 transition-all duration-300 ease-in-out
                 hover:scale-101 hover:shadow-2xl  cursor-pointer"
 
@@ -123,6 +127,8 @@ setFilterdBooks(books)
           )}
 
         </div>
+
+
       </main>
 
 
