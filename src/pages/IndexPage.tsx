@@ -65,7 +65,7 @@ setBooks(books)
         <section className="     flex  justify-center    " >
 
 <Autocomplete
-  className="w-full xl:w-1/2"
+  className="w-screen xl:w-1/2"
   disablePortal
   options={books.map(book => book.title)}
   onChange={(_, value) => {
@@ -83,24 +83,21 @@ setBooks(books)
 
 <div
   className={`
-    flex flex-wrap justify-center align-text-top h-full
-    md:min-w-4/5 gap-3 m-0
-  `}
+    flex flex-wrap justify-center align-text-top h-full items-center 
+    md:min-w-4/5  m-0 
+     `}
 >
           {books.map(book =>
             <div key={book.id} onClick={() => {
 
               navigate("/index/BookDetail", { state: { "id": book.id } })
             }}
-              className=" disabled flex-1 min-w-65 max-w-105 bg-blue-100 box-border min-h-100
-                transition-all duration-300 ease-in-out
-                hover:scale-101 hover:shadow-2xl  cursor-pointer"
-
+className="w-full sm:w-62  lg:w-83 rounded-t-xl mx-auto bg-blue-100 h-100 transition-all ease-in-out hover:scale-105 hover:shadow-2xl cursor-pointer "
 
             ><div className="w-full h-full  text-sm">
                 <img src={url} alt="libro"
 
-                  className={`object-fill w-full h-75/100 transition-opacity duration-300 ${!book.has_active_loan ? 'opacity-100' : 'opacity-60'}`}
+                  className={`object-fill rounded-t-xl w-full h-75/100 transition-opacity duration-300 ${!book.has_active_loan ? 'opacity-100' : 'opacity-60'}`}
 
                 />
                 <div className=" p-1 relative">
