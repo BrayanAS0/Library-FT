@@ -5,11 +5,12 @@ import SignupPage from "./pages/SignupPage";
 import IndexPage from "./pages/IndexPage";
 import BookDetail from "./pages/BookDetail";
 import Layout from "./components/Layout";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="flex bg-amber-50 flex-col min-h-screen bg-gradient-to-br ">
+      <div className="flex bg-amber-50 flex-col min-h-screen">
 
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -19,6 +20,7 @@ function App() {
 
             <Route path="/index" element={<IndexPage></IndexPage>} />
             <Route path="/index/BookDetail" element={<BookDetail />} />
+            <Route path="/Profile" element={<Profile/>} />
           </Route>
         </Routes>
       </div>

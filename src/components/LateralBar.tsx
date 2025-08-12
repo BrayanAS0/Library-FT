@@ -42,7 +42,7 @@ export default function LateralBar() {
         horizontal: 'left',
       }}
     >
-      <MenuItem onClick={handleClose}>Profile</MenuItem>
+      <MenuItem onClick={handleClose}><Link to={"/Profile"}>Profile</Link></MenuItem>
       <MenuItem onClick={handleClose}>
         <Link to="/login">Logout</Link>
       </MenuItem>

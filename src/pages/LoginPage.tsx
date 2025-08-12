@@ -18,7 +18,7 @@ export default function LoginForm(){
   const authentication = () => {
     if (password && username) {
       let data={"username":username,"password":password} 
-      Api.post(`minilibrary/login`,data).then(data =>{
+      Api.post("api/token/ ",data).then(data =>{
         if(data["access"]!="granted"){
       setWarning("User or Password incorrect")
 
