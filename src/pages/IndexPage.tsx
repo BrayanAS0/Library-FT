@@ -107,7 +107,7 @@ className="w-full sm:w-62  lg:w-83 rounded-t-xl mx-auto bg-blue-100 h-100 transi
                     <button className="w-full h-full  text-sm border-3 shadow-2xl shadow-blue-950 rounded-xl cursor-pointer   bg-blue-500 disabled:opacity-40" disabled={book.has_active_loan} onClick={(e) => {
                       e.stopPropagation()
                       setBookLoan(book.title)
-                      setBook({"book_id":book.id,"user_id":1})
+                      setBook({"book_id":book.id})
                       setShowDialog(true)
                     }}
 

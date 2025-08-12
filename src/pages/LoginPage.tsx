@@ -15,22 +15,29 @@ export default function LoginForm(){
   const [warning,setWarning] =useState<string>("")
   const navigate = useNavigate();
 
-  const authentication = () => {
-    if (password && username) {
-      let data={"username":username,"password":password} 
-      Api.post("api/token/ ",data).then(data =>{
-        if(data["access"]!="granted"){
-      setWarning("User or Password incorrect")
+const authentication = () => {
+  if (password && username) {
+    const data = { username, password };
 
+    Api.post("api/token/", data)
+      .then(res => {
+        if (res.access && res.refresh) {
+          localStorage.setItem("access", res.access);
+          localStorage.setItem("refresh", res.refresh);
+
+          navigate("/index", { state: { username } });
+        } else {
+          setWarning("User or Password incorrect");
         }
-        console.log(data)
-        navigate("/index",{ state: { username: username } });
-      }
-      );
-    } else {
-      setWarning("All fields are required")
-    }
-  };
+      })
+      .catch(() => {
+        setWarning("User or Password incorrect");
+      });
+  } else {
+    setWarning("All fields are required");
+  }
+};
+
 
   return (
     <div className="flex  flex-col mt-12 bg-gradient-to-br ">
