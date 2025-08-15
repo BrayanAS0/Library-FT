@@ -20,7 +20,7 @@ export default function LateralBar() {
         onClick={handleClick}
         className=""
       >
-        <PersonIcon sx={{ fontSize: 40 }} />
+        <PersonIcon sx={{ fontSize: 40 }} className=" hover:cursor-pointer" />
       </button>
       <span className="relative inline-block">
         <span className="absolute left-4 top-1   text-black font-bold text-sm ">
