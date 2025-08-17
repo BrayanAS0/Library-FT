@@ -4,7 +4,6 @@ import Dialog from "../components/Dialog";
 import ReviewCard from "../components/ReviewCard";
 import { BookLoan } from "../interface/BookLoan";
 import { Book } from "../interface/Books";
-import { BookIndex } from "../interface/Book_index";
 
 interface bookLoans extends Book, BookLoan, Omit<Book, "id"> {
   book_id: Book["id"];
@@ -57,7 +56,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex flex-col text-center w-full border">
+    <div className="flex flex-col text-center   ">
       <Dialog
         open={dialogOpen}
         body="¿Estás seguro que deseas devolver el libro?"
@@ -86,8 +85,7 @@ export default function Profile() {
         <h1 className="font-bold text-3xl text-shadow-lg">Loans</h1>
       </div>
 
-      <div className="flex md:flex-row flex-col flex-wrap p-3 space-y-6 h-135">
-        {loans?.length > 0 ?
+<div className="flex md:flex-row flex-col flex-wrap p-3 space-y-6">        {loans?.length > 0 ?
           loans.map(book => (
             <div key={book.id} className="w-82 mx-auto bg-orange-200 flex rounded-2xl h-135">
               <div className="flex flex-col flex-1 m-3 bg-orange-400 box-border space-y-2 rounded-2xl">
